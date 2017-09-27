@@ -50,14 +50,37 @@ func (s *Server) getPolicies(w http.ResponseWriter, r *http.Request, _ httproute
 //returns the policy specified by ID in JSON format
 func (s *Server) getPolicy(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
-	log.Printf("App Started ...")
+	log.Printf("getPolicy ..."+ps.ByName("policyID"))
 
 	var policy model.Policy
+	var person model.Person
+	var address model.Address
+	var personId int
+	var addressId int
+
+	//fetch policy details
 	if err := s.db.Find(&policy, ps.ByName("policyID")).Error; err != nil {
 		http.Error(w, err.Error(), errToStatusCode(err))
 	} else {
-		writeJSONResult(w, policy)
+		personId = policy.PersonID
 	}
+
+	//fetch person details
+	if err := s.db.Find(&person, personId ).Error; err != nil {
+		http.Error(w, err.Error(), errToStatusCode(err))
+	} else {
+		addressId = person.AddressID
+	}
+
+	//fetch address details
+	if err := s.db.Find(&address, addressId ).Error; err != nil {
+		http.Error(w, err.Error(), errToStatusCode(err))
+	} else {
+		person.Address = address
+		policy.Person = person
+	}
+
+	writeJSONResult(w, policy)
 }
 
 //to create sample data for testing use createPolicy method

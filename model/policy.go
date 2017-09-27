@@ -5,7 +5,7 @@ type Policy struct {
 	ID    int     `json:"id,omitempty"`
 
 	Person   Person `json:"person" gorm:"ForeignKey:PersonID"`
-	PersonID int    `json:"-"`
+	PersonID int    `json:"_"`
 
 	Premium float64 `json:"premium,string" gorm:"type:decimal(10,2)"`
 }
@@ -16,7 +16,7 @@ type Person struct {
 	PersonName  string `json:"personName"  gorm:"not null;"`
 
 	Address Address `json:"address" gorm:"ForeignKey:AddressID"`
-	AddressID int `json:"-"`
+	AddressID int `json:"_"`
 }
 
 
