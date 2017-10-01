@@ -1,3 +1,9 @@
 modules.xml
 PolicyValidationAPI.iml
 workspace.xml
+
+.idea/markdown-exported-files.xml
+.idea/markdown-navigator.xml
+.idea/markdown-navigator/profiles_settings.xml
+
+.idea/
