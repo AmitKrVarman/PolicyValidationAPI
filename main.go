@@ -26,16 +26,12 @@ func main() {
 
 	//Open DB Connection
 	db, err := gorm.Open("postgres", dbAddr)
-	//Create DB
-	db.Exec("CREATE DATABASE IF NOT EXISTS POLICYDB");
-
-	if  err != nil {
-		log.Fatal(err)
-	}
 
 	if err != nil {
 		panic(fmt.Sprintf("failed to connect to database: %v", err))
 	} else {
+		//Create DB
+		db.Exec("CREATE DATABASE IF NOT EXISTS POLICYDB");
 		log.Printf("DB connection establisded...")
 		defer db.Close()
 	}
