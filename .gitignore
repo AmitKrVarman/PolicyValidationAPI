@@ -4,6 +4,7 @@ workspace.xml
 
 markdown-exported-files.xml
 markdown-navigator.xml
-markdown-navigator/profiles_settings.xml
+profiles_settings.xml
 
-.idea/
+.idea/*
+markdown-navigator/*
