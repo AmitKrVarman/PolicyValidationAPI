@@ -9,17 +9,43 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/AmitKrVarman/PolicyValidationAPI/dbclient"
 
+	"os"
+	"fmt"
+	"github.com/jinzhu/gorm"
 )
 
 
 func main() {
-	log.Printf("App Started ...")
+	log.Printf("Strating API ...")
 	flag.Parse()
+	setupMode:= flag.Arg(0) //read setup mode
 
-	db := dbclient.SetupDB(*dbclient.DBAddress)
-	//dbclient.SeedPolicyData(*dbclient.DBAddress)
+	dbAddr := os.Getenv("DB_ADDRESS") //GET DB ADDRESS
+	log.Printf("DB_ADDRESS :- "+dbAddr )
 
-	defer db.Close()
+
+	//Open DB Connection
+	db, err := gorm.Open("postgres", dbAddr)
+	//Create DB
+	db.Exec("CREATE DATABASE IF NOT EXISTS POLICYDB");
+
+	if  err != nil {
+		log.Fatal(err)
+	}
+
+	if err != nil {
+		panic(fmt.Sprintf("failed to connect to database: %v", err))
+	} else {
+		log.Printf("DB connection establisded...")
+		defer db.Close()
+	}
+
+	//one time set to create Tables if
+	if setupMode == "true" {
+		log.Printf("API started in Setup Mode")
+		dbclient.SetupDB(db)
+		dbclient.SeedPolicyData(db)
+	}
 
 	router := httprouter.New()
 

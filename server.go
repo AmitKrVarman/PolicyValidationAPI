@@ -14,9 +14,9 @@ import (
 
 // RegisterRouter registers a router onto the Server.
 func (s *Server) RegisterRouter(router *httprouter.Router) {
-	router.GET("/ping", s.ping)
 
-	router.POST("/addPolicy", s.createPolicy)
+	router.GET("/ping", s.ping)
+	router.POST("/addPolicies", s.createPolicy)
 	router.GET("/getPolicies", s.getPolicies)
 	router.GET("/policy/:policyID", s.getPolicy)
 }
