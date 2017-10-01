@@ -7,7 +7,7 @@ import (
 
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/julienschmidt/httprouter"
-	"github.com/PolicyValidationAPI/dbclient"
+	"github.com/AmitKrVarman/PolicyValidationAPI/dbclient"
 
 )
 
@@ -17,7 +17,7 @@ func main() {
 	flag.Parse()
 
 	db := dbclient.SetupDB(*dbclient.DBAddress)
-	dbclient.SeedPolicyData(*dbclient.DBAddress)
+	//dbclient.SeedPolicyData(*dbclient.DBAddress)
 
 	defer db.Close()
 

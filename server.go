@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/PolicyValidationAPI/model"
+	"github.com/AmitKrVarman/PolicyValidationAPI/model"
 	"github.com/jinzhu/gorm"
 	"github.com/julienschmidt/httprouter"
 	"log"
