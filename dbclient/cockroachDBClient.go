@@ -3,10 +3,10 @@ package dbclient
 import (
 	"github.com/jinzhu/gorm"
 	"fmt"
-	"github.com/PolicyValidationAPI/model"
 	"flag"
 	"log"
 	"strconv"
+	"github.com/AmitKrVarman/PolicyValidationAPI/model"
 )
 
 var (

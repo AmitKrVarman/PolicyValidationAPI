@@ -7,7 +7,7 @@ import (
 
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 	"github.com/julienschmidt/httprouter"
-	"github.com/PolicyValidationAPI/dbclient"
+	"github.com/AmitKrVarman/PolicyValidationAPI/dbclient"
 
 )
 

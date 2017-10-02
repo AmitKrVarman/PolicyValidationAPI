@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Chart to deploy a Policy Validation API in Kubernetes
+name: policyValidationAPI
+version: 0.1.0

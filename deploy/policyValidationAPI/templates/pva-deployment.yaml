@@ -1,0 +1,56 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ template "fullname" . }}
+  labels:
+    app: {{ template "name" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+spec:
+  replicas: {{ .Values.policyValidationAPI.replicas }}
+  template:
+    metadata:
+      labels:
+        release: "{{ .Release.Name }}"
+        app: {{ template "name" . }}
+    spec:
+      containers:
+        - name: {{ template "fullname" . }}
+          image: "{{ .Values.image }}:{{ .Values.imageTag }}"
+          imagePullPolicy: {{ default "" .Values.imagePullPolicy | quote }}
+          # args:
+          #   - "web"
+          env:
+            {{ if .Values.cockroachdb.enabled }}
+            - name: DB_HOST
+              value: {{ printf "%s-%s" .Release.Name .Values.cockroachdb.Name | trunc 56 }}-public
+            - name: DB_PORT
+              value: {{ .Values.cockroachdb.GrpcPort }}
+            - name: DB_USER
+              value: ""
+            - name: DB_PASSWORD
+              value: ""
+            - name: DB_DATABASE
+              value: cockroachdb
+            {{ else }}
+            - name: DB_HOST
+              value: {{ .Values.cockroachdb.uri }}
+            {{ end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.policyValidationAPI.service.internalPort }}
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 120
+            timeoutSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+          resources:
+{{ toYaml .Values.policyValidationAPI.resources | indent 12 }}

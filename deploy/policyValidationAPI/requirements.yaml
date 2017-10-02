@@ -1,0 +1,5 @@
+dependencies:
+- name: cockroachdb
+  version: 0.5.0
+  repository: https://kubernetes-charts.storage.googleapis.com/
+  condition: cockroach.enabled
