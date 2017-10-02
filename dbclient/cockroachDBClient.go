@@ -3,7 +3,6 @@ package dbclient
 import (
 	"github.com/jinzhu/gorm"
 	"github.com/AmitKrVarman/PolicyValidationAPI/model"
-	"flag"
 	"log"
 	"strconv"
 )
