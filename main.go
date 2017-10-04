@@ -5,50 +5,47 @@ import (
 	"log"
 	"net/http"
 
-	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"github.com/julienschmidt/httprouter"
 	"github.com/AmitKrVarman/PolicyValidationAPI/dbclient"
+	"github.com/julienschmidt/httprouter"
 
 	"os"
-	"fmt"
-	"github.com/jinzhu/gorm"
 )
 
+const ENV_RUN_PORT = "RUN_PORT"
 
-func main() {
-	log.Printf("Strating API ...")
-	flag.Parse()
-	setupMode:= flag.Arg(0) //read setup mode
+var RUN_PORT = "6544"
 
-	dbAddr := os.Getenv("DB_ADDRESS") //GET DB ADDRESS
-	log.Printf("DB_ADDRESS :- "+dbAddr )
-
-
-	//Open DB Connection
-	db, err := gorm.Open("postgres", dbAddr)
-
-	if err != nil {
-		panic(fmt.Sprintf("failed to connect to database: %v", err))
-	} else {
-		//Create DB
-		db.Exec("CREATE DATABASE IF NOT EXISTS POLICYDB");
-		log.Printf("DB connection establisded...")
-		defer db.Close()
-	}
-
-	//one time set to create Tables if
-	if setupMode == "true" {
-		log.Printf("API started in Setup Mode")
-		dbclient.SetupDB(db)
-		dbclient.SeedPolicyData(db)
-	}
-
-	router := httprouter.New()
-
-	server := GetServer(db)
-	server.RegisterRouter(router)
-
-	log.Fatal(http.ListenAndServe(":6543", router))
+func init() {
+	getEnvPort()
 }
 
+func getEnvPort() {
+	port := os.Getenv(ENV_RUN_PORT)
+	if len(port) > 0 {
+		RUN_PORT = port
+	}
+}
 
+func main() {
+	log.Printf("Starting API ...")
+
+	//Open DB Connection
+	db := dbclient.GetInstance()
+	defer db.Close()
+
+	//if setup mode specified - create tables
+	flag.Parse()
+	setupMode := flag.Arg(0)
+	if setupMode == "true" {
+		log.Printf("API started in Setup Mode")
+		dbclient.AutoMigrate()
+	}
+
+	//GET HTTP SERVER
+	server := GetServerInstance(db)
+	//initialise routes
+	router := httprouter.New()
+	server.RegisterRouter(router)
+
+	log.Fatal(http.ListenAndServe(":"+RUN_PORT, router))
+}

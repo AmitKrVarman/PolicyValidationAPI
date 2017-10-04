@@ -5,12 +5,17 @@ import (
 	"fmt"
 	"net/http"
 
+	"log"
+
 	"github.com/AmitKrVarman/PolicyValidationAPI/model"
 	"github.com/jinzhu/gorm"
 	"github.com/julienschmidt/httprouter"
-	"log"
 )
 
+// Server is an http server that handles REST requests.
+type Server struct {
+	db *gorm.DB
+}
 
 // RegisterRouter registers a router onto the Server.
 func (s *Server) RegisterRouter(router *httprouter.Router) {
@@ -21,17 +26,10 @@ func (s *Server) RegisterRouter(router *httprouter.Router) {
 	router.GET("/policy/:policyID", s.getPolicy)
 }
 
-
-// Server is an http server that handles REST requests.
-type Server struct {
-	db *gorm.DB
-}
-
 // NewServer creates a new instance of a Server.
-func GetServer(db *gorm.DB) *Server {
+func GetServerInstance(db *gorm.DB) *Server {
 	return &Server{db: db}
 }
-
 
 func (s *Server) ping(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
 	writeTextResult(w, "ping successful")
@@ -50,7 +48,7 @@ func (s *Server) getPolicies(w http.ResponseWriter, r *http.Request, _ httproute
 //returns the policy specified by ID in JSON format
 func (s *Server) getPolicy(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 
-	log.Printf("getPolicy ..."+ps.ByName("policyID"))
+	log.Printf("getPolicy ..." + ps.ByName("policyID"))
 
 	var policy model.Policy
 	var person model.Person
@@ -66,14 +64,14 @@ func (s *Server) getPolicy(w http.ResponseWriter, r *http.Request, ps httprouter
 	}
 
 	//fetch person details
-	if err := s.db.Find(&person, personId ).Error; err != nil {
+	if err := s.db.Find(&person, personId).Error; err != nil {
 		http.Error(w, err.Error(), errToStatusCode(err))
 	} else {
 		addressId = person.AddressID
 	}
 
 	//fetch address details
-	if err := s.db.Find(&address, addressId ).Error; err != nil {
+	if err := s.db.Find(&address, addressId).Error; err != nil {
 		http.Error(w, err.Error(), errToStatusCode(err))
 	} else {
 		person.Address = address
@@ -124,7 +122,3 @@ func errToStatusCode(err error) int {
 		return http.StatusInternalServerError
 	}
 }
-
-
-
-
