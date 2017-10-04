@@ -9,42 +9,24 @@ import (
 	"github.com/AmitKrVarman/PolicyValidationAPI/model"
 )
 
-var (
+/*var (
 	DBAddress = flag.String("addr",
 		"postgresql://root@localhost:26257/POLICYDB?sslmode=disable",
 		"the address of the database")
-)
+)*/
 
-func SetupDB(addr string) *gorm.DB {
-
-	log.Printf("Setting DB ...")
-
-	db, err := gorm.Open("postgres", addr)
-	if err != nil {
-		panic(fmt.Sprintf("failed to connect to database: %v", err))
-	}
-
+func SetupDB(db *gorm.DB) {
 	// Migrate the schema
-	log.Printf("Migrating Schema ...")
+	log.Printf("Auto Migrating Schemas ...")
+	db.AutoMigrate(&model.Policy{}, &model.Person{}, &model.Address{})
 
-	if db.HasTable(&model.Policy{}) { //checking one of the table
-		db.AutoMigrate(&model.Policy{}, &model.Person{}, &model.Address{})
-	}
-
-
-	return db
 }
 
 
-func SeedPolicyData(addr string) {
+func SeedPolicyData(db *gorm.DB) {
 	log.Printf("Seeding data to DB ...")
 
-	db, err := gorm.Open("postgres", addr)
-	if err != nil {
-		panic(fmt.Sprintf("failed to connect to database: %v", err))
-	}
-
-	for i:=0 ; i<10 ; i++ {
+	for i:=11 ; i<20 ; i++ {
 
 		address := model.Address{
 					ID:100+i,
