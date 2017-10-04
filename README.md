@@ -2,24 +2,34 @@
 
 This API provides Rest Services for Policy ID Validation
 
-> USE /addPolicies to add sample data
-> USE /policy/policyID to retrieve Policy Data
+- USE /addPolicies to add sample data
+
+- USE /policy/policyID to retrieve Policy Data
 
 # Pre-requisite
 1. Setup Cockroch DB
+
 2. Overide DB parameters by setting up Environment Variables (API will default if not fount)
 
 	Variable Name		Default Value
 	
 	//DB Attributes
 	DB_DRIVER         string = "postgres"
+
 	DB_HOST           string = "localhost"
+
 	DB_PORT           string = "26257"
+
 	DB_NAME           string = "POLICYDB"
+
 	DB_USER           string = "dbuser"
+
 	DB_PASSWORD       string = "Password123"
+
 	DB_SSL_MODE       string = "disable" // disable | require
+
 	DB_MAX_CONNECTION int    = 1
+
 	DB_LOG_MODE       bool   = true
 	
 	//HTTP PORT FOR API
@@ -32,7 +42,7 @@ e.g. - $ go run *.go true
 
 
 
-#Installation Details - Cockroach DB
+# Installation Details - Cockroach DB
 
 How to setup Cockroch DB locally, for test purpose below steps for non secured Cluster setup ( test purpose --insecure flag has been used, can be setup as secured)
 
@@ -77,7 +87,7 @@ e.g - http://localhost:6544/addPolicies
 
 Sample payload
 
-{
+`{
 	"id": 11,
 	"person": {
 		"id": 1001,
@@ -91,7 +101,7 @@ Sample payload
 		}
 	},
 	"premium": "106.23"
-}
+}`
 
 
 
