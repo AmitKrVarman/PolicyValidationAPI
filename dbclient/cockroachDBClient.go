@@ -1,7 +1,6 @@
 package dbclient
 
 import (
-	"github.com/jinzhu/gorm"
 	"fmt"
 	"flag"
 	"log"
