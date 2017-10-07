@@ -8,3 +8,5 @@ profiles_settings.xml
 
 .idea/*
 markdown-navigator/*
+
+api-credential.yml

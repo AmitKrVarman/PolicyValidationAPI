@@ -37,13 +37,15 @@ resources:
 jobs: 
   - name: build-docker-image
     public: true
+    serial: true
     plan: 
     - get: policy-validation-api
+      trigger: true
     - task: lint-dockerfile
       file: PolicyValidationAPI/ci/lint_dockerfile.yaml
     - put: pva-docker-image
       params: 
-        build: policy-validation-api
+        build: PolicyValidationAPI
     - put: slack-notification
       params:
         # channel: '#infrastructure'

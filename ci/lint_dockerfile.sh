@@ -2,7 +2,7 @@
 
 set -e -u -x
 
-find pva/ -name "Dockerfile*" \
+find policyValidationAPI/ -name "Dockerfile*" \
 	-exec echo "Starting linting for policy-validation-api" {} \; \
 	-exec dockerfile_lint -p -f {} \;
 
