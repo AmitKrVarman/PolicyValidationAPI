@@ -2,7 +2,6 @@ package dbclient
 
 import (
 	"fmt"
-	"flag"
 	"log"
 	"os"
 	"strconv"
