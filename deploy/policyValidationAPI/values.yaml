@@ -8,7 +8,7 @@
 
 ## Policy Validation API image.
 ##
-image: gcr.io/landg/policyValidationAPI
+image: gcr.io/landg-179815/policyvalidationapi
 
 ## Policy Validation API image version.
 ##
