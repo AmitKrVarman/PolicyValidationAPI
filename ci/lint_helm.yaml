@@ -8,7 +8,7 @@ image_resource:
     tag: 'latest'
 
 inputs:
-- name: policy-validation-api
+- name: PolicyValidationAPI
 
 run:
   path: ./policyValidationAPI/ci/lint_helm.sh

@@ -17,7 +17,7 @@ resource_types:
     repository: jtarchie/pr
 
 resources: 
-  - name: policy-validation-api
+  - name: PolicyValidationAPI
     type: git 
     source: 
       uri: https://github.com/AmitKrVarman/PolicyValidationAPI
@@ -39,11 +39,11 @@ jobs:
     public: true
     serial: true
     plan: 
-    - get: policy-validation-api
+    - get: PolicyValidationAPI
       trigger: true
     - task: lint-dockerfile
       file: PolicyValidationAPI/ci/lint_dockerfile.yaml
-    - put: pva-docker-image
+    - put: PolicyValidationAPI-docker-image
       params: 
         build: PolicyValidationAPI
     - put: slack-notification
@@ -60,7 +60,7 @@ jobs:
   - name: build-helm-chart
     public: true
     plan: 
-    - get: policy-validation-api
+    - get: PolicyValidationAPI
     - task: lint-helm
       file: PolicyValidationAPI/ci/lint_helm.yaml
     - put: slack-notification
