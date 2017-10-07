@@ -21,7 +21,7 @@ resources:
     type: git 
     source: 
       uri: https://github.com/AmitKrVarman/PolicyValidationAPI
-  - name: pva-docker-image
+  - name: PolicyValidationAPI-docker-image
     type: docker-image
     source:
       email: {{docker-email}}
@@ -41,8 +41,6 @@ jobs:
     plan: 
     - get: PolicyValidationAPI
       trigger: true
-    - task: lint-dockerfile
-      file: PolicyValidationAPI/ci/lint_dockerfile.yaml
     - put: PolicyValidationAPI-docker-image
       params: 
         build: PolicyValidationAPI
